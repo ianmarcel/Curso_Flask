@@ -1,14 +1,20 @@
-from flask import Flask
-from flask import render_template
-
+from flask import Flask, render_template, request
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    nome = "ian"
-    esporte = "tenis"
-    return render_template("index.html",nome=nome,esporte2=esporte)
+frutas = []
 
-@app.route("/sobre")
+@app.route('/', methods=["GET", "POST"])
+def principal():
+	#frutas = ["Morango", "Uva", "Laranja", "Mamão", "Maçã", "Pêra", "Melão", "Abacaxi"]
+	if request.method == "POST":
+		if request.form.get("fruta"):
+			frutas.append(request.form.get("fruta"))
+	return render_template("index.html", frutas=frutas)
+
+
+@app.route('/sobre')
 def sobre():
-    return render_template("sobre.html")
+	notas = {"Fulano":5.0, "Beltrano":6.0, "Aluno": 7.0, "Sicrano":8.5, "Rodrigo":9.5}
+	return render_template("sobre.html", notas=notas)
+
+#http://127.0.0.1:5000
